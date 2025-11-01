@@ -5,13 +5,15 @@ document:
 
 
 declaration:
-        'object' ID '{' 
+        'object' objectName=ID '{' 
             'type' ':' type=TYPES ';'
             ('language' ':' language=LANGUAGES ';' )?
             ('framework'  ':' server=FRAMEWORKSERVER ';')?
+            ('servermain' ':' servermain=ID ';')?
+            ('path' ':' path=PATH ';')?
         
         '}' ';' #objectDeclaration |
-        'test' TYPETEST ID ';' #testDeclaration ;
+        'test' TYPETEST objectName=ID (serverport= INT)? (serverapp=ID)?';' #testDeclaration ;
 
 
 TYPETEST: 'run';
@@ -20,5 +22,6 @@ LANGUAGES: 'python' | 'node' | 'ruby' ;
 
 TYPES: 'script' | 'server' ;
 ID:   [a-zA-Z]+ ;
-
+INT:  [0-9]+ ;
+PATH: [a-zA-Z0-9/\-_.]+ ;
 WS: [ \t\r\n]+ -> skip;

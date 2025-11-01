@@ -2,5 +2,7 @@ object App {
   type: server;
   language: python;
   framework: fastapi;
+  servermain: app;
+  path: ./pastaFastapiServer;
 };
-test run App;
+test run App app;
