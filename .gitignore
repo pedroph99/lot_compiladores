@@ -1,0 +1,34 @@
+% Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+.Python
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+
+% Virtual envs
+venv/
+.venv/
+env/
+
+% ANTLR generated artifacts
+*.interp
+*.tokens
+ExprLexer.py
+ExprListener.py
+ExprParser.py
+ExprVisitor.py
+
+% OS / editor
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+.vscode/
+.idea/
+
+% Logs
+*.log
+

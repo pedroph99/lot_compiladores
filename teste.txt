@@ -1,0 +1,6 @@
+object App {
+  type: server;
+  language: python;
+  framework: fastapi;
+};
+test run App;
