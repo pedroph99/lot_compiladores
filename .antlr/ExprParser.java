@@ -31,7 +31,7 @@ public class ExprParser extends Parser {
 	private static String[] makeLiteralNames() {
 		return new String[] {
 			null, "'object'", "'{'", "'type'", "':'", "';'", "'language'", "'framework'", 
-			"'servermain'", "'path'", "'}'", "'test'", "'run'"
+			"'mainFile'", "'path'", "'}'", "'test'", "'run'"
 		};
 	}
 	private static final String[] _LITERAL_NAMES = makeLiteralNames();
@@ -180,7 +180,7 @@ public class ExprParser extends Parser {
 		public Token type;
 		public Token language;
 		public Token server;
-		public Token servermain;
+		public Token mainFile;
 		public Token path;
 		public List<TerminalNode> ID() { return getTokens(ExprParser.ID); }
 		public TerminalNode ID(int i) {
@@ -261,7 +261,7 @@ public class ExprParser extends Parser {
 					setState(31);
 					match(T__3);
 					setState(32);
-					((ObjectDeclarationContext)_localctx).servermain = match(ID);
+					((ObjectDeclarationContext)_localctx).mainFile = match(ID);
 					setState(33);
 					match(T__4);
 					}

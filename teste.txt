@@ -2,7 +2,16 @@ object App {
   type: server;
   language: python;
   framework: fastapi;
-  servermain: app;
+  mainFile: app;
   path: ./pastaFastapiServer;
 };
-test run App app;
+
+object ScriptTest {
+  type: script;
+  language: python;
+  mainFile: scriptTeste;
+  path: ./pastaScript;
+  
+};
+
+test run ScriptTest;

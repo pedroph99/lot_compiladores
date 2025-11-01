@@ -2,6 +2,7 @@ from antlr4 import ParserRuleContext
 from ExprExceptions import InvalidFastAPITestException, InvalidFrameworkException, InvalidObjectException, VariableNotFoundException
 from ExprParser import ExprParser
 from ExprLexer import ExprLexer
+from PythonScriptsFunction import run_python_script
 from fastAPIFunctions import handlerFastAPIRunTest
 class ExprSemanticAnalyser:
     def __init__(self):
@@ -46,7 +47,7 @@ class ExprSemanticAnalyser:
                     "type": type_obj.text,
                     "framework": framework.text if framework else None,
                     "language": language.text if language else None,
-                    "servermain": tree.servermain.text if tree.servermain else None,
+                    "mainFile": tree.mainFile.text if tree.mainFile else None,
                     "path": tree.path.text if tree.PATH() else None
                     }
             
@@ -76,18 +77,38 @@ class ExprSemanticAnalyser:
                             
                             
                             handlerFastAPIRunTest(
-                                main_file = f'{current_object["servermain"]}.py',
+                                main_file = f'{current_object["mainFile"]}.py',
                                 main_path = f"{current_object['path']}",
                                 port = serverport,
                                 app_name= serverapp,
 
                             )
+                            return 
+                
+                if current_object["type"] == "script":
+                    if tree.TYPETEST().getText() == "run":
+                        argsScript = None
+                        if argsScript:
+                            argsScript = argsScript.split(',')
+                        else:
+                            argsScript = []
+                        # Handler para teste de servidor run
+                        run_python_script(
+                            script_path = f"{current_object['path']}/{current_object['mainFile']}.py",
+                            args = argsScript,
+                            cwd = f"{current_object['path']}",
+                            env = None,
+                            timeout = None,
+                            show_output = False
+                        )
+
+                        print('Teste de script executado com sucesso')
+                        return
+                    
 
 
-                        
 
 
-
-                server_framework = tree.objectName.text
+                
             
             

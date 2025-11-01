@@ -1,20 +1,25 @@
 grammar Expr;
 
-document: 
-    (decs+=declaration+) EOF; 
+document:
+    (decs+=declaration+) EOF;
 
 
 declaration:
-        'object' objectName=ID '{' 
+        'object' objectName=ID '{'
             'type' ':' type=TYPES ';'
             ('language' ':' language=LANGUAGES ';' )?
             ('framework'  ':' server=FRAMEWORKSERVER ';')?
-            ('servermain' ':' servermain=ID ';')?
+            ('mainFile' ':' mainFile=ID ';')?
             ('path' ':' path=PATH ';')?
-        
-        '}' ';' #objectDeclaration |
-        'test' TYPETEST objectName=ID (serverport= INT)? (serverapp=ID)?';' #testDeclaration ;
+        '}' ';' #objectDeclaration
+    |
+        'test' TYPETEST objectName=ID (serverport=INT)? (serverapp=ID)? (args=argsSpec)? ';' #testDeclaration
+    ;
 
+// Parser rule para argumentos do teste (lista de IDs, separados por espaço ou vírgula)
+argsSpec:
+    'args' '=' '[' args+=ID ((',' args+=ID) | (args+=ID))* ']'
+    ;
 
 TYPETEST: 'run';
 FRAMEWORKSERVER: 'fastapi' | 'express' | 'rails' ;
