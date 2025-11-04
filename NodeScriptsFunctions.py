@@ -2,7 +2,6 @@ from __future__ import annotations
 
 import os
 import subprocess
-import sys
 from typing import Iterable, Optional, Tuple, Dict, Any
 
 
@@ -30,7 +29,7 @@ def _to_tuple_args(args: Optional[Iterable[str] | str]) -> Tuple[str, ...]:
     return tuple(str(a) for a in args)
 
 
-def run_python_script(
+def run_node_script(
     script_path: str,
     args: Optional[Iterable[str] | str] = None,
     *,
@@ -39,12 +38,11 @@ def run_python_script(
     timeout: Optional[float] = None,
     show_output: bool = False,
 ) -> Dict[str, Any]:
-    
     """
-    Executa um script Python localizado em ``script_path``.
+    Executa um script Node.js localizado em ``script_path`` usando o binário ``node``.
 
     Parâmetros:
-        script_path: caminho para o arquivo ``.py`` a ser executado.
+        script_path: caminho para o arquivo ``.js`` a ser executado.
         args: parâmetros adicionais passados ao script.
         cwd: diretório de trabalho para a execução (opcional).
         env: variáveis de ambiente extras (mescladas com ``os.environ``).
@@ -78,15 +76,12 @@ def run_python_script(
     arg_tuple = _to_tuple_args(args)
 
     cmd = [
-        sys.executable,
+        "node",
         script_path,
         *arg_tuple,
     ]
-    
-    print(cwd)
 
     if show_output:
-        # Repassa saída diretamente ao terminal
         completed = subprocess.run(
             cmd,
             cwd=cwd,
@@ -102,7 +97,6 @@ def run_python_script(
             "cmd": cmd,
         }
 
-    # Captura stdout/stderr
     completed = subprocess.run(
         cmd,
         cwd=cwd,
@@ -121,5 +115,3 @@ def run_python_script(
         "stderr": completed.stderr or "",
         "cmd": cmd,
     }
-
-

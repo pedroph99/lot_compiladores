@@ -2,6 +2,7 @@ from antlr4 import ParserRuleContext
 from ExprExceptions import InvalidFastAPITestException, InvalidFrameworkException, InvalidObjectException, VariableNotFoundException
 from ExprParser import ExprParser
 from ExprLexer import ExprLexer
+from NodeScriptsFunctions import run_node_script
 from PythonScriptsFunction import run_python_script
 from fastAPIFunctions import handlerFastAPIRunTest
 class ExprSemanticAnalyser:
@@ -93,17 +94,29 @@ class ExprSemanticAnalyser:
                         else:
                             argsScript = []
                         # Handler para teste de servidor run
-                        run_python_script(
-                            script_path = f"{current_object['path']}/{current_object['mainFile']}.py",
-                            args = argsScript,
-                            cwd = f"{current_object['path']}",
-                            env = None,
-                            timeout = None,
-                            show_output = False
-                        )
+                        if current_object["language"] == "python":
+                            run_python_script(
+                                script_path = f"{current_object['path']}/{current_object['mainFile']}.py",
+                                args = argsScript,
+                                #cwd = f"{current_object['path']}",
+                                env = None,
+                                timeout = None,
+                                show_output = True
+                            )
 
-                        print('Teste de script executado com sucesso')
-                        return
+                            print('Teste de script executado com sucesso')
+                            return
+                        elif current_object['language'] == "node":
+                            run_node_script(
+                                script_path = f"{current_object['path']}/{current_object['mainFile']}.js",
+                                args = argsScript,
+                                #cwd = f"{current_object['path']}",
+                                env = None,
+                                timeout = None,
+                                show_output = True
+                            )
+                            print('ok')
+                            return 
                     
 
 

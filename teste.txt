@@ -8,7 +8,7 @@ object App {
 
 object ScriptTest {
   type: script;
-  language: python;
+  language: node;
   mainFile: scriptTeste;
   path: ./pastaScript;
   
