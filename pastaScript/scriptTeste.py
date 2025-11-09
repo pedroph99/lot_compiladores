@@ -1,1 +1,4 @@
-print('Olá mundo')
+import sys
+
+
+print(f'Olá mundo {sys.argv[1]}')

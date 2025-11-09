@@ -31,7 +31,7 @@ class ExprSemanticAnalyser:
                 type_obj = tree.type_
                 framework = tree.server
                 language = tree.language
-                print(framework, language)
+                
                 if language and framework:
                     if not self.frameworks_languages[framework.text] == language.text:
                         raise InvalidFrameworkException(f"Framework {framework.text} not compatible with language {language.text}")
@@ -42,6 +42,7 @@ class ExprSemanticAnalyser:
                 if type_obj.text == "server" and not framework:
                     raise InvalidObjectException(f"Object {tree.objectName.text} must have a framework because it is a server")
 
+                
                 # Adiciona informações da variável
 
                 self.objects_infos[tree.objectName.text] = {
@@ -53,11 +54,29 @@ class ExprSemanticAnalyser:
                     }
             
             case ExprParser.TestDeclarationContext():
-                if not tree.objectName.text in self.object_variables:
-                    raise VariableNotFoundException(f"Variable {tree.ID().getText()} not found")
+
+               
+
+                if len(tree.objectName) > 1 and tree.TYPETEST().getText() == "run":
+                    raise InvalidFastAPITestException("Tipo inválido de teste. Utilize o formato 'test runBulk Object1, Object2, ...'")
+                for child in tree.objectName:
+                    
+                    if not child.text in self.object_variables:
+                        raise VariableNotFoundException(f"Variável {tree.ID().getText()} não encontrada")
+                    
+                    current_object = self.objects_infos[child.text]
                 
-                current_object = self.objects_infos[tree.objectName.text]
+                if tree.TYPETEST().getText() == "run":
+                    if tree.argbulk:
+                        raise InvalidFastAPITestException("Tipo inválido de args. Utilize o formato 'args=[...]'")
+                if tree.TYPETEST().getText() == "runBulk":
+                    if tree.args:
+                        raise InvalidFastAPITestException("Tipo inválido de args. Utilize o formato 'args=[ [...], ...]'")
+                    
                 
+            
+                
+                """
                 if current_object["type"] == "server":
                     if tree.TYPETEST().getText() == "run":
                         # Handler para teste de servidor run 
@@ -122,6 +141,6 @@ class ExprSemanticAnalyser:
 
 
 
-                
+                """
             
             

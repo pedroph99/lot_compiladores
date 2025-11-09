@@ -8,10 +8,22 @@ object App {
 
 object ScriptTest {
   type: script;
-  language: node;
+  language: python;
   mainFile: scriptTeste;
   path: ./pastaScript;
+
   
 };
 
-test run ScriptTest;
+object ScriptTesttwo {
+  type: script;
+  language: node;
+  mainFile: scriptTeste;
+  path: ./pastaScript;
+
+  
+};
+
+
+
+test runBulk ScriptTest, ScriptTesttwo args=[ [1, 2, 3] , [4, 5, 6] ];

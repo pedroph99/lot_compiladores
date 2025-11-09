@@ -13,15 +13,22 @@ declaration:
             ('path' ':' path=PATH ';')?
         '}' ';' #objectDeclaration
     |
-        'test' TYPETEST objectName=ID (serverport=INT)? (serverapp=ID)? (args=argsSpec)? ';' #testDeclaration
+        'test' TYPETEST objectName+=ID (((',' objectName+=ID) | (objectName+=ID))*) (serverport=INT)? (serverapp=ID)? (args=argsSpec)? (argBulk=argsBulkSpec)? ';' #testDeclaration
     ;
 
-// Parser rule para argumentos do teste (lista de IDs, separados por espaço ou vírgula)
+// Parser rule para argumentos do teste (IDs ou INTs, separados por espaco ou vedrgula)
 argsSpec:
-    'args' '=' '[' args+=ID ((',' args+=ID) | (args+=ID))* ']'
+    'args' '=' '[' args+=(ID|INT) ( (',' args+=(ID|INT)) | (args+=(ID|INT)) )* ']'
     ;
 
-TYPETEST: 'run';
+argsBulkSpec:
+    'args' '=' '[' args+=argsBulkBody ((',' args+=argsBulkBody) | (args+=argsBulkBody))* ']';
+
+argsBulkBody:
+    '[' args+=(ID|INT) ( (',' args+=(ID|INT)) | (args+=(ID|INT)) )* ']'
+    ;
+
+TYPETEST: 'run' | 'runBulk';
 FRAMEWORKSERVER: 'fastapi' | 'express' | 'rails' ;
 LANGUAGES: 'python' | 'node' | 'ruby' ;
 
@@ -30,3 +37,4 @@ ID:   [a-zA-Z]+ ;
 INT:  [0-9]+ ;
 PATH: [a-zA-Z0-9/\-_.]+ ;
 WS: [ \t\r\n]+ -> skip;
+
