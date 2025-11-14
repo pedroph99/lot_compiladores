@@ -27,7 +27,7 @@ class ExprInterpreter:
 
     def _run_test(self, tree: ExprParser.TestDeclarationContext) -> None:
         args_list = self._arguments_to_list(tree)
-        print(tree.objectName[1].text)
+        
 
         for i, child  in enumerate(tree.objectName):
             obj_name = child.text
@@ -49,7 +49,7 @@ class ExprInterpreter:
             
 
             if typ == "server":
-                port = int(tree.serverport.getText()) if tree.serverport else 8000
+                port = int(tree.serverport.text) if tree.serverport else 8000
                 app_name = tree.serverapp.text if tree.serverapp else None
 
                 if framework == "fastapi":

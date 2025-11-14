@@ -26,4 +26,4 @@ object ScriptTesttwo {
 
 
 
-test runBulk ScriptTest, ScriptTesttwo args=[ [1, 2, 3] , [4, 5, 6] ];
+test run App 8000 app;
