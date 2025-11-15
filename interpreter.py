@@ -49,6 +49,7 @@ class ExprInterpreter:
             
 
             if typ == "server":
+                print('foi chamado')
                 port = int(tree.serverport.text) if tree.serverport else 8000
                 app_name = tree.serverapp.text if tree.serverapp else None
 
@@ -61,7 +62,7 @@ class ExprInterpreter:
                         port=port,
                         app_name=app_name,
                     )
-                return
+                
 
             if typ == "script":
                 if lang == "python":

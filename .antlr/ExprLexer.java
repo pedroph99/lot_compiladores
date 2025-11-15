@@ -1,4 +1,4 @@
-// Generated from /home/pedro/Área de trabalho/lot_compiladores/Expr.g4 by ANTLR 4.13.1
+// Generated from c:/Users/pedro/Desktop/testesLinguagem/Expr.g4 by ANTLR 4.13.1
 import org.antlr.v4.runtime.Lexer;
 import org.antlr.v4.runtime.CharStream;
 import org.antlr.v4.runtime.Token;

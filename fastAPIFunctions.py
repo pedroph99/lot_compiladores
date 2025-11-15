@@ -23,7 +23,9 @@ def _normalize_paths(paths: Optional[Iterable[str]]) -> Tuple[str, ...]:
         norm.append(p if p.startswith("/") else "/" + p)
     return tuple(norm) or ("/",)
 
-
+"""
+Função que verifica a disponiblidade do servidor FastAPI
+"""
 def ping_fastapi(
     base_url: str = "http://127.0.0.1:8000",
     paths: Optional[Iterable[str]] = None,

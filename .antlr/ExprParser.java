@@ -1,4 +1,4 @@
-// Generated from /home/pedro/Área de trabalho/lot_compiladores/Expr.g4 by ANTLR 4.13.1
+// Generated from c:/Users/pedro/Desktop/testesLinguagem/Expr.g4 by ANTLR 4.13.1
 import org.antlr.v4.runtime.atn.*;
 import org.antlr.v4.runtime.dfa.DFA;
 import org.antlr.v4.runtime.*;
@@ -110,14 +110,6 @@ public class ExprParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_document; }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof ExprListener ) ((ExprListener)listener).enterDocument(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof ExprListener ) ((ExprListener)listener).exitDocument(this);
-		}
 	}
 
 	public final DocumentContext document() throws RecognitionException {
@@ -192,14 +184,6 @@ public class ExprParser extends Parser {
 			return getRuleContext(ArgsBulkSpecContext.class,0);
 		}
 		public TestDeclarationContext(DeclarationContext ctx) { copyFrom(ctx); }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof ExprListener ) ((ExprListener)listener).enterTestDeclaration(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof ExprListener ) ((ExprListener)listener).exitTestDeclaration(this);
-		}
 	}
 	@SuppressWarnings("CheckReturnValue")
 	public static class ObjectDeclarationContext extends DeclarationContext {
@@ -218,14 +202,6 @@ public class ExprParser extends Parser {
 		public TerminalNode FRAMEWORKSERVER() { return getToken(ExprParser.FRAMEWORKSERVER, 0); }
 		public TerminalNode PATH() { return getToken(ExprParser.PATH, 0); }
 		public ObjectDeclarationContext(DeclarationContext ctx) { copyFrom(ctx); }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof ExprListener ) ((ExprListener)listener).enterObjectDeclaration(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof ExprListener ) ((ExprListener)listener).exitObjectDeclaration(this);
-		}
 	}
 
 	public final DeclarationContext declaration() throws RecognitionException {
@@ -455,14 +431,6 @@ public class ExprParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_argsSpec; }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof ExprListener ) ((ExprListener)listener).enterArgsSpec(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof ExprListener ) ((ExprListener)listener).exitArgsSpec(this);
-		}
 	}
 
 	public final ArgsSpecContext argsSpec() throws RecognitionException {
@@ -574,14 +542,6 @@ public class ExprParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_argsBulkSpec; }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof ExprListener ) ((ExprListener)listener).enterArgsBulkSpec(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof ExprListener ) ((ExprListener)listener).exitArgsBulkSpec(this);
-		}
 	}
 
 	public final ArgsBulkSpecContext argsBulkSpec() throws RecognitionException {
@@ -671,14 +631,6 @@ public class ExprParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_argsBulkBody; }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof ExprListener ) ((ExprListener)listener).enterArgsBulkBody(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof ExprListener ) ((ExprListener)listener).exitArgsBulkBody(this);
-		}
 	}
 
 	public final ArgsBulkBodyContext argsBulkBody() throws RecognitionException {
