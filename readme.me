@@ -6,7 +6,7 @@ Resumo
 - Imprime a árvore de parsing; em caso de erro léxico/sintático, mostra mensagens de erro.
 
 Pré‑requisitos
-- Java 8+ instalado (java -version)
+- Java 8+ instalado (java -version) 
 - Python 3.10+ instalado (python --version)
 - Pacote runtime do ANTLR para Python: `antlr4-python3-runtime`
 - JAR do ANTLR 4 (ex.: antlr-4.13.1-complete.jar)
@@ -31,9 +31,6 @@ Como rodar
 - Com o venv ativo e os artefatos gerados presentes:
   `python .\main.py .\teste.txt`
 
-Comportamento
-- Em sucesso: imprime a árvore da regra inicial `document` em formato S-expression.
-- Em erro: imprime "Erros encontrados:" seguido de mensagens `linha:coluna` descrevendo o problema léxico/sintático e retorna código de saída 2.
 
 Exemplo de entrada (teste.txt)
 ```
@@ -46,10 +43,8 @@ test run App;
 ```
 
 Atualizar a gramática
-- Após editar `Expr.g4`, gere novamente os arquivos do ANTLR com o mesmo comando de geração indicado acima.
+- Rode o código antlr4 {Nome_linguagem} D-language=Python3 para compilar o Parser e o Lexer
 
 Problemas comuns
 - "java" não reconhecido: instale o Java e/ou adicione ao PATH.
 - Download do JAR bloqueado: baixe manualmente e salve como `antlr-4.13.1-complete.jar` na raiz do projeto.
-- `getText()` sem espaços: a regra `WS: [ \t\r\n]+ -> skip;` descarta whitespace; a concatenação de tokens não inclui espaços mesmo quando tudo funciona.
-

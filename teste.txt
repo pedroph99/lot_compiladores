@@ -2,7 +2,7 @@ object App {
   type: server;
   language: python;
   framework: fastapi;
-  mainFile: app;
+  mainFile: aaa;
   path: ./pastaFastapiServer;
 };
 

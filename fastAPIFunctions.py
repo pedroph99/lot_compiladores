@@ -180,14 +180,15 @@ def run_server_uvicorn(
         reload: ativa reload do uvicorn (desaconselhado para CI).
         extra_args: lista adicional de argumentos para o uvicorn.
     """
-    # Garante que uvicorn está disponível antes de iniciar o subprocesso
-    try:  # import leve apenas para validar dependência
-        import uvicorn  # type: ignore  # noqa: F401
+    # Os servidores fastapi majoritariamente utilizam o servidor uvicorn, então é preciso verificar se há o uvicorn instalado
+    try:  
+        import uvicorn 
     except Exception as exc:
         raise RuntimeError("Uvicorn não está instalado. Instale com: pip install uvicorn fastapi") from exc
 
     base_url = f"http://{host}:{port}"
-    print('o app_path é', app_path)
+    
+    # Roda o fastapi através do CMD do windows. 
     cmd = [
         sys.executable,
         "-m",
@@ -272,7 +273,11 @@ def run_server_uvicorn(
     return result
 
 
+"""
+Essa função é um handler que vai rodar o servidor fastapi, verificando se o servidor primeiramente existe. Depois, vamos rodar a
+função que liga para o servidor.
 
+"""
 def handlerFastAPIRunTest(
         main_file = 'main.py',
         main_path = './pastaFastapiServer',
@@ -281,11 +286,13 @@ def handlerFastAPIRunTest(
         port = 8000,
 
 ):
-    print(main_path)
+    
     if not os.path.exists(main_path):
-        raise FileNotFoundError(f"O caminho {main_path} não existe")
+        print(f"O caminho {main_path} não existe")
+        return
     if not os.path.isfile(os.path.join(main_path, main_file)):
-        raise NotADirectoryError(f"O caminho {main_file} não é um arquivo")
+        print(f"O caminho {main_file} não é um arquivo")
+        return
 
     
     try:
