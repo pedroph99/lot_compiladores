@@ -67,7 +67,7 @@ class ExprSemanticAnalyser:
                     current_object = self.objects_infos[child.text]
                 
                 if tree.TYPETEST().getText() == "run":
-                    if tree.argbulk:
+                    if tree.argBulk:
                         raise InvalidFastAPITestException("Tipo inválido de args. Utilize o formato 'args=[...]'")
                 if tree.TYPETEST().getText() == "runBulk":
                     if tree.args:
