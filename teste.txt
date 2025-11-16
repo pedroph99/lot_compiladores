@@ -6,15 +6,6 @@ object App {
   path: ./pastaFastapiServer;
 };
 
-
-object Appother {
-  type: server;
-  language: python;
-  framework: fastapi;
-  mainFile: app;
-  path: ./pastaFastapiServer;
-};
-
 object ScriptTest {
   type: script;
   language: python;
@@ -35,4 +26,4 @@ object ScriptTesttwo {
 
 
 
-test runBulk App Appother 8000 app;
+test runBulk App  ScriptTest  ScriptTesttwo serveports: [8000] args: [ [1,2] ]  serverApps : [ app ] ;

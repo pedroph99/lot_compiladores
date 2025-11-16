@@ -1,5 +1,5 @@
 from antlr4 import ParserRuleContext
-from ExprExceptions import InvalidFastAPITestException, InvalidFrameworkException, InvalidObjectException, VariableNotFoundException
+from ExprExceptions import InvalidFastAPITestException, InvalidFrameworkException, InvalidObjectException, VariableNotFoundException, InvalidTestArgException
 from ExprParser import ExprParser
 from ExprLexer import ExprLexer
 from NodeScriptsFunctions import run_node_script
@@ -67,11 +67,16 @@ class ExprSemanticAnalyser:
                     current_object = self.objects_infos[child.text]
                 
                 if tree.TYPETEST().getText() == "run":
-                    if tree.argBulk:
-                        raise InvalidFastAPITestException("Tipo inválido de args. Utilize o formato 'args=[...]'")
+                    for x in tree.testargs:
+                        print(type(x))
+                        if type(x) == ExprParser.ArgsBulkContext:
+                            raise InvalidTestArgException("Tipo inválido de args. Utilize o formato 'args: [ [...], ...]'")
+                
                 if tree.TYPETEST().getText() == "runBulk":
-                    if tree.args:
-                        raise InvalidFastAPITestException("Tipo inválido de args. Utilize o formato 'args=[ [...], ...]'")
+                    for x in tree.testargs:
+                        print(type(x))
+                        if type(x) == ExprParser.ArgsContext:
+                            raise InvalidTestArgException("Tipo inválido de args. Utilize o formato 'args: [ [...], ...]'")
                     
                 
             

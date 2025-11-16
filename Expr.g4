@@ -13,16 +13,22 @@ declaration:
             ('path' ':' path=PATH ';')?
         '}' ';' #objectDeclaration
     |
-        'test' TYPETEST objectName+=ID (((',' objectName+=ID) | (objectName+=ID))*) (serverport=INT)? (serverapp=ID)? (args=argsSpec)? (argBulk=argsBulkSpec)? ';' #testDeclaration
+        'test' TYPETEST objectName+=ID (((',' objectName+=ID) | (objectName+=ID))*) (testargs+=testArguments)* ';' #testDeclaration
     ;
+
+testArguments:
+    'serveports' ':' '[' serverports+=INT ']' #serverPorts |
+    'serverApps' ':' '[' serverapps+=ID ']' #serverApps |
+    argsValues = argsSpec #args |
+    argsValues = argsBulkSpec #argsBulk;
 
 // Parser rule para argumentos do teste (IDs ou INTs, separados por espaco ou vedrgula)
 argsSpec:
-    'args' '=' '[' args+=(ID|INT) ( (',' args+=(ID|INT)) | (args+=(ID|INT)) )* ']'
+    'args' ':' '[' args+=(ID|INT) ( (',' args+=(ID|INT)) | (args+=(ID|INT)) )* ']'
     ;
 
 argsBulkSpec:
-    'args' '=' '[' args+=argsBulkBody ((',' args+=argsBulkBody) | (args+=argsBulkBody))* ']';
+    'args' ':' '[' args+=argsBulkBody ((',' args+=argsBulkBody) | (args+=argsBulkBody))* ']';
 
 argsBulkBody:
     '[' args+=(ID|INT) ( (',' args+=(ID|INT)) | (args+=(ID|INT)) )* ']'

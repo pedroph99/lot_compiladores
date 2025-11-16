@@ -27,7 +27,16 @@ class ExprInterpreter:
 
     def _run_test(self, tree: ExprParser.TestDeclarationContext) -> None:
         args_list = self._arguments_to_list(tree)
-        
+        print(args_list)
+        server_ports = []
+        server_apps = []
+        for x in tree.testargs:
+            if type(x) == ExprParser.ServerPortsContext:
+                for y in x.serverports:
+                    server_ports.append(y.text)
+            elif type(x) == ExprParser.ServerAppsContext:
+                for y in x.serverapps:
+                    server_apps.append(y.text)
 
         for i, child  in enumerate(tree.objectName):
             obj_name = child.text
@@ -50,8 +59,9 @@ class ExprInterpreter:
 
             if typ == "server":
                 print('foi chamado')
-                port = int(tree.serverport.text) if tree.serverport else 8000
-                app_name = tree.serverapp.text if tree.serverapp else None
+                
+                port = server_ports[i] if server_ports and i < len(server_ports) else 8000
+                app_name = server_apps[i] if server_apps and i < len(server_apps) else None
 
                 if framework == "fastapi":
                     if not app_name:
@@ -69,7 +79,7 @@ class ExprInterpreter:
                     script_path = os.path.join(path, f"{main_file}.py")
                     run_python_script(
                         script_path=script_path,
-                        args=args_list[i],
+                        args=args_list[i] if args_list and i < len(args_list) else None,
                         env=None,
                         timeout=None,
                         show_output=True,
@@ -79,9 +89,10 @@ class ExprInterpreter:
                 
                     script_path = os.path.join(path, f"{main_file}.js")
 
+                    print(args_list)
                     run_node_script(
                         script_path=script_path,
-                        args=args_list[i],
+                        args=args_list[i] if args_list and i < len(args_list) else None,
                         env=None,
                         timeout=None,
                         show_output=True,
@@ -90,14 +101,26 @@ class ExprInterpreter:
 
     def _arguments_to_list(self, tree: ExprParser.ArgsSpecContext) -> List[str]:
         args_list = []
-        if tree.argBulk:
+
+        args_bulk = None
+        args = None
+        for x in tree.testargs:
+            if type(x) == ExprParser.ArgsBulkContext:
+                args_bulk = x
+            elif type(x) == ExprParser.ArgsContext:
+                args = x
+        if args_bulk:
             
 
-            for x in tree.argBulk.args:
+            for x in args_bulk.argsValues.args:
                 current_list = []
                 for y in x.args:
                     
                     current_list.append(y.text)
                 args_list.append(current_list)
+        elif args:
+            for x in args.argsValues.args:
+                args_list.append(x.text)
+            
         
         return args_list
