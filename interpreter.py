@@ -21,20 +21,22 @@ class ExprInterpreter:
                     self.run(child)
             case ExprParser.TestDeclarationContext():
                 self._run_test(tree)
+                
             case _:
                 # Ignora outras regras aqui (ex.: ObjectDeclaration)
                 return
 
     def _run_test(self, tree: ExprParser.TestDeclarationContext) -> None:
         args_list = self._arguments_to_list(tree)
-        print(args_list)
+
+
         server_ports = []
         server_apps = []
         for x in tree.testargs:
-            if type(x) == ExprParser.ServerPortsContext:
+            if type(x) is ExprParser.ServerPortsContext:
                 for y in x.serverports:
                     server_ports.append(y.text)
-            elif type(x) == ExprParser.ServerAppsContext:
+            elif type(x) is ExprParser.ServerAppsContext:
                 for y in x.serverapps:
                     server_apps.append(y.text)
 
@@ -49,7 +51,6 @@ class ExprInterpreter:
 
             typ = current.get("type")
             lang = current.get("language")
-            print(f"language: {lang}")
             framework = current.get("framework")
             main_file = current.get("mainFile")
             path = current.get("path") or "."
@@ -58,7 +59,7 @@ class ExprInterpreter:
             
 
             if typ == "server":
-                print('foi chamado')
+                
                 
                 port = server_ports[i] if server_ports and i < len(server_ports) else 8000
                 app_name = server_apps[i] if server_apps and i < len(server_apps) else None
@@ -66,18 +67,23 @@ class ExprInterpreter:
                 if framework == "fastapi":
                     if not app_name:
                         raise InvalidFastAPITestException("FastAPI test must have a serverapp")
-                    handlerFastAPIRunTest(
+                    result = handlerFastAPIRunTest(
                         main_file=f"{main_file}.py",
                         main_path=path,
                         port=port,
                         app_name=app_name,
                     )
                 
+                if result is False:
+                    print(f"Falha ao executar o teste de servidor {obj_name}")
+                else:
+                    print(f"Teste de servidor {obj_name} executado com sucesso")
+                
 
             if typ == "script":
                 if lang == "python":
                     script_path = os.path.join(path, f"{main_file}.py")
-                    run_python_script(
+                    result = run_python_script(
                         script_path=script_path,
                         args=args_list[i] if args_list and i < len(args_list) else None,
                         env=None,
@@ -89,14 +95,18 @@ class ExprInterpreter:
                 
                     script_path = os.path.join(path, f"{main_file}.js")
 
-                    print(args_list)
-                    run_node_script(
+              
+                    result = run_node_script(
                         script_path=script_path,
                         args=args_list[i] if args_list and i < len(args_list) else None,
                         env=None,
                         timeout=None,
                         show_output=True,
                     )
+                if result is False:
+                    print(f"Falha ao executar o teste de script {obj_name}")
+                else:
+                    print(f"Teste de script {obj_name} executado com sucesso")
         return
 
     def _arguments_to_list(self, tree: ExprParser.ArgsSpecContext) -> List[str]:
@@ -105,9 +115,9 @@ class ExprInterpreter:
         args_bulk = None
         args = None
         for x in tree.testargs:
-            if type(x) == ExprParser.ArgsBulkContext:
+            if type(x) is ExprParser.ArgsBulkContext:
                 args_bulk = x
-            elif type(x) == ExprParser.ArgsContext:
+            elif type(x) is ExprParser.ArgsContext:
                 args = x
         if args_bulk:
             

@@ -184,7 +184,7 @@ def run_server_uvicorn(
     """
     # Os servidores fastapi majoritariamente utilizam o servidor uvicorn, então é preciso verificar se há o uvicorn instalado
     try:  
-        import uvicorn 
+        pass 
     except Exception as exc:
         raise RuntimeError("Uvicorn não está instalado. Instale com: pip install uvicorn fastapi") from exc
 
@@ -291,10 +291,11 @@ def handlerFastAPIRunTest(
     
     if not os.path.exists(main_path):
         print(f"O caminho {main_path} não existe")
-        return
+        
+        return  False
     if not os.path.isfile(os.path.join(main_path, main_file)):
         print(f"O caminho {main_file} não é um arquivo")
-        return
+        return  False
 
     
     try:
@@ -307,8 +308,9 @@ def handlerFastAPIRunTest(
             show_server_output=True
         )
     except Exception as e:
-        raise ServerCouldNotStartException(f"Não foi possível iniciar o servidor. {e}")
+        print(f"Não foi possível iniciar o servidor. {e}")
+        return False
 
 
-    print('O servidor foi iniciado com sucesso')
-    return 
+    
+    return True

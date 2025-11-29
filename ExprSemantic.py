@@ -1,10 +1,6 @@
 from antlr4 import ParserRuleContext
 from ExprExceptions import InvalidFastAPITestException, InvalidFrameworkException, InvalidObjectException, VariableNotFoundException, InvalidTestArgException
 from ExprParser import ExprParser
-from ExprLexer import ExprLexer
-from NodeScriptsFunctions import run_node_script
-from PythonScriptsFunction import run_python_script
-from fastAPIFunctions import handlerFastAPIRunTest
 class ExprSemanticAnalyser:
     def __init__(self):
         self.object_variables = []
@@ -61,91 +57,19 @@ class ExprSemanticAnalyser:
                     raise InvalidFastAPITestException("Tipo inválido de teste. Utilize o formato 'test runBulk Object1, Object2, ...'")
                 for child in tree.objectName:
                     
-                    if not child.text in self.object_variables:
-                        raise VariableNotFoundException(f"Variável {tree.ID().getText()} não encontrada")
+                    if child.text not in self.object_variables:
+                        raise VariableNotFoundException(f"Variável {child.text} não encontrada")
                     
-                    current_object = self.objects_infos[child.text]
+                    
                 
                 if tree.TYPETEST().getText() == "run":
                     for x in tree.testargs:
                         print(type(x))
-                        if type(x) == ExprParser.ArgsBulkContext:
+                        if type(x) is ExprParser.ArgsBulkContext:
                             raise InvalidTestArgException("Tipo inválido de args. Utilize o formato 'args: [ [...], ...]'")
                 
                 if tree.TYPETEST().getText() == "runBulk":
                     for x in tree.testargs:
                         print(type(x))
-                        if type(x) == ExprParser.ArgsContext:
+                        if type(x) is ExprParser.ArgsContext:
                             raise InvalidTestArgException("Tipo inválido de args. Utilize o formato 'args: [ [...], ...]'")
-                    
-                
-            
-                
-                """
-                if current_object["type"] == "server":
-                    if tree.TYPETEST().getText() == "run":
-                        # Handler para teste de servidor run 
-                        serverport = 8000
-                        serverapp = 'app'
-                        if  tree.serverport:
-                            serverport = tree.serverport.getText()
-                        framework = current_object["framework"]
-
-                        if tree.serverapp:
-                            print('Existe serverapp')
-                            serverapp = tree.serverapp.text
-                        
-
-                        if framework == "fastapi":
-                            if not tree.serverapp:
-                                raise InvalidFastAPITestException("FastAPI test must have a serverapp")
-                            
-                            
-                            handlerFastAPIRunTest(
-                                main_file = f'{current_object["mainFile"]}.py',
-                                main_path = f"{current_object['path']}",
-                                port = serverport,
-                                app_name= serverapp,
-
-                            )
-                            return 
-                
-                if current_object["type"] == "script":
-                    if tree.TYPETEST().getText() == "run":
-                        argsScript = None
-                        if argsScript:
-                            argsScript = argsScript.split(',')
-                        else:
-                            argsScript = []
-                        # Handler para teste de servidor run
-                        if current_object["language"] == "python":
-                            run_python_script(
-                                script_path = f"{current_object['path']}/{current_object['mainFile']}.py",
-                                args = argsScript,
-                                #cwd = f"{current_object['path']}",
-                                env = None,
-                                timeout = None,
-                                show_output = True
-                            )
-
-                            print('Teste de script executado com sucesso')
-                            return
-                        elif current_object['language'] == "node":
-                            run_node_script(
-                                script_path = f"{current_object['path']}/{current_object['mainFile']}.js",
-                                args = argsScript,
-                                #cwd = f"{current_object['path']}",
-                                env = None,
-                                timeout = None,
-                                show_output = True
-                            )
-                            print('ok')
-                            return 
-                    
-
-
-
-
-                """
-            
-            

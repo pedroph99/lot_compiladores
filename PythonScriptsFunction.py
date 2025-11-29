@@ -67,12 +67,17 @@ def run_python_script(
     """
 
     if not os.path.exists(script_path):
-        raise FileNotFoundError(f"O caminho do script não existe: {script_path}")
+        
+        print(f"O caminho do script não existe: {script_path}")
+        return False
     if not os.path.isfile(script_path):
-        raise FileNotFoundError(f"O caminho não é um arquivo: {script_path}")
+        
+        print(f"O caminho não é um arquivo: {script_path}")
+        return False
 
     if cwd is not None and not os.path.isdir(cwd):
-        raise NotADirectoryError(f"Diretório de trabalho inválido: {cwd}")
+        print(f"Diretório de trabalho inválido: {cwd}")
+        return False
 
     extra_env = {**os.environ, **(env or {})}
     arg_tuple = _to_tuple_args(args)
@@ -83,19 +88,27 @@ def run_python_script(
         *arg_tuple,
     ]
     
-    print(cwd)
 
     if show_output:
         # Repassa saída diretamente ao terminal
-        completed = subprocess.run(
-            cmd,
-            cwd=cwd,
-            env=extra_env,
-            timeout=timeout,
-            check=False,
-        )
+        try:
+            completed = subprocess.run(
+                cmd,
+                cwd=cwd,
+                env=extra_env,
+                timeout=timeout,
+                check=False,
+            )
+        except Exception as exc:
+            print(f"Erro ao executar script: {exc}")
+            return False
+
+        if completed.returncode != 0:
+            print(f"Script retornou código {completed.returncode}")
+            return False
+
         return {
-            "success": completed.returncode == 0,
+            "success": True,
             "returncode": int(completed.returncode),
             "stdout": "",
             "stderr": "",
@@ -103,23 +116,32 @@ def run_python_script(
         }
 
     # Captura stdout/stderr
-    completed = subprocess.run(
-        cmd,
-        cwd=cwd,
-        env=extra_env,
-        timeout=timeout,
-        check=False,
-        stdout=subprocess.PIPE,
-        stderr=subprocess.PIPE,
-        text=True,
-    )
+    try:
+        print('aassaas')
+        completed = subprocess.run(
+            cmd,
+            cwd=cwd,
+            env=extra_env,
+            timeout=timeout,
+            check=False,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
+            text=True,
+        )
+    except Exception as exc:
+        print(f"Erro ao executar script: {exc}")
+        return False
+
+    if completed.returncode != 0:
+        print(f"Script retornou código {completed.returncode}")
+        if completed.stderr:
+            print(completed.stderr)
+        return False
 
     return {
-        "success": completed.returncode == 0,
+        "success": True,
         "returncode": int(completed.returncode),
         "stdout": completed.stdout or "",
         "stderr": completed.stderr or "",
         "cmd": cmd,
     }
-
-
