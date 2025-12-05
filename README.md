@@ -69,6 +69,10 @@ Os parâmetros dos testes unitários são:
 - <code>args</code>: é um array de arrays de strings, que são os argumentos que serão passados para o objeto.
 
 
+### 4.3 Rodando o código fonte
+
+Todo o código da linguagem é escrito em um arquivo de texto txt. Logo após a criação do arquivo, é possível rodar o comando <code>python main.py ./teste.txt</code> para executar o arquivo passando como parâmetro o caminho do arquivo a ser processado pelo processo de análise léxico-sintático-semântico e posteriormente rodando o código pelo interpretador. 
+
 
 
 
