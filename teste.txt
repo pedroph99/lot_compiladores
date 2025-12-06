@@ -24,6 +24,14 @@ object ScriptTesttwo {
   
 };
 
+object ExpressServer {
+  type: server;
+  language: node;
+  framework: express;
+  mainFile: index;
+  path: ./pastaExpressServer;
+};
 
+test runBulk App  ScriptTest  ScriptTesttwo serverports: [8000] args: [ [1,2] ]  serverApps : [ app ] ;
 
-test runBulk App  ScriptTest  ScriptTesttwo serveports: [8000] args: [ [1,2] ]  serverApps : [ app ] ;
+test run ExpressServer serverports:[3000];

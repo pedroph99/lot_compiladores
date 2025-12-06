@@ -17,12 +17,12 @@ declaration:
     ;
 
 testArguments:
-    'serveports' ':' '[' serverports+=INT ']' #serverPorts |
+    'serverports' ':' '[' serverports+=INT ']' #serverPorts |
     'serverApps' ':' '[' serverapps+=ID ']' #serverApps |
     argsValues = argsSpec #args |
     argsValues = argsBulkSpec #argsBulk;
 
-// Parser rule para argumentos do teste (IDs ou INTs, separados por espaco ou vedrgula)
+// Parser rule para argumentos do teste (IDs ou INTs, separados por espaço ou vírgula)
 argsSpec:
     'args' ':' '[' args+=(ID|INT) ( (',' args+=(ID|INT)) | (args+=(ID|INT)) )* ']'
     ;
@@ -44,5 +44,6 @@ TYPES: 'script' | 'server' ;
 ID:   [a-zA-Z]+ ;
 INT:  [0-9]+ ;
 PATH: [a-zA-Z0-9/\-_.]+ ;
-WS: [ \t\r\n]+ -> skip;
+WS : (' ' | '\t' | '\r' | '\n')+ -> skip ;
+
 

@@ -8,6 +8,7 @@ from ExprExceptions import InvalidFastAPITestException
 from PythonScriptsFunction import run_python_script
 from NodeScriptsFunctions import run_node_script
 from fastAPIFunctions import handlerFastAPIRunTest
+from expressFunctions import handlerExpressRunTest
 
 
 class ExprInterpreter:
@@ -73,6 +74,17 @@ class ExprInterpreter:
                         port=port,
                         app_name=app_name,
                     )
+
+                elif framework == "express":
+                    # O Node já roda o server diretamente pelo app.listen(), então não precisamos indicar/tratar o app_name (instância do server) aqui
+                    script_file = f"{main_file}.js" if not main_file.endswith('.js') else main_file
+                    
+                    result = handlerExpressRunTest(
+                        main_file=script_file,
+                        main_path=path,
+                        port=port
+                    )
+
                 
                 if result is False:
                     print(f"Falha ao executar o teste de servidor {obj_name}")

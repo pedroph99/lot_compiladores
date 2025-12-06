@@ -1,4 +1,4 @@
-// Generated from c:/Users/pedro/Desktop/testesLinguagem/Expr.g4 by ANTLR 4.13.1
+// Generated from c:/Users/jeang/Downloads/lot_compiladores-main/lot_compiladores-main/Expr.g4 by ANTLR 4.13.1
 import org.antlr.v4.runtime.atn.*;
 import org.antlr.v4.runtime.dfa.DFA;
 import org.antlr.v4.runtime.*;
@@ -34,7 +34,7 @@ public class ExprParser extends Parser {
 	private static String[] makeLiteralNames() {
 		return new String[] {
 			null, "'object'", "'{'", "'type'", "':'", "';'", "'language'", "'framework'", 
-			"'mainFile'", "'path'", "'}'", "'test'", "','", "'serveports'", "'['", 
+			"'mainFile'", "'path'", "'}'", "'test'", "','", "'serverports'", "'['", 
 			"']'", "'serverApps'", "'args'"
 		};
 	}
