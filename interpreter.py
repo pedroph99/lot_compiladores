@@ -61,18 +61,21 @@ class ExprInterpreter:
 
             if typ == "server":
                 
-                
+                result = None
                 port = server_ports[i] if server_ports and i < len(server_ports) else 8000
                 app_name = server_apps[i] if server_apps and i < len(server_apps) else None
+                current_routes = args_list[i] if args_list and i < len(args_list) else []
 
                 if framework == "fastapi":
+                    main_file=f"{main_file}.py" 
+
                     if not app_name:
                         raise InvalidFastAPITestException("FastAPI test must have a serverapp")
                     result = handlerFastAPIRunTest(
                         main_file=f"{main_file}.py",
                         main_path=path,
                         port=port,
-                        app_name=app_name,
+                        app_name=app_name
                     )
 
                 elif framework == "express":
@@ -82,7 +85,8 @@ class ExprInterpreter:
                     result = handlerExpressRunTest(
                         main_file=script_file,
                         main_path=path,
-                        port=port
+                        port=port,
+                        routes=current_routes
                     )
 
                 
@@ -135,14 +139,16 @@ class ExprInterpreter:
             
 
             for x in args_bulk.argsValues.args:
-                current_list = []
+                current_bulk_list = []
                 for y in x.args:
                     
-                    current_list.append(y.text)
-                args_list.append(current_list)
+                    current_bulk_list.append(y.text)
+                args_list.append(current_bulk_list)
         elif args:
+            current_args_list = []
             for x in args.argsValues.args:
-                args_list.append(x.text)
+                current_args_list.append(x.text)
             
+            args_list.append(current_args_list)
         
         return args_list

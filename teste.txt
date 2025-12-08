@@ -34,4 +34,4 @@ object ExpressServer {
 
 test runBulk App  ScriptTest  ScriptTesttwo serverports: [8000] args: [ [1,2] ]  serverApps : [ app ] ;
 
-test run ExpressServer serverports:[3000];
+test run ExpressServer serverports:[3000] args:[/health, /users, /api/status];

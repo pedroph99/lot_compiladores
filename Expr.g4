@@ -24,7 +24,7 @@ testArguments:
 
 // Parser rule para argumentos do teste (IDs ou INTs, separados por espaço ou vírgula)
 argsSpec:
-    'args' ':' '[' args+=(ID|INT) ( (',' args+=(ID|INT)) | (args+=(ID|INT)) )* ']'
+    'args' ':' '[' args+=(ID|INT|PATH) ( (',' args+=(ID|INT|PATH)) | (args+=(ID|INT|PATH)) )* ']'
     ;
 
 argsBulkSpec:
