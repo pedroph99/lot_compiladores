@@ -9,24 +9,19 @@ from typing import Iterable, Optional, Tuple, Dict, Any
 def _to_tuple_args(args: Optional[Iterable[str] | str]) -> Tuple[str, ...]:
     if not args:
         return tuple()
-    # Se vier como string (ex.: "args=[foo, bar]" ou "[foo bar]")
     if isinstance(args, str):
         raw = args.strip()
-        # remove prefixo "args" e '=' se existir
         if raw.lower().startswith("args"):
             raw = raw[4:].lstrip()
             if raw.startswith("="):
                 raw = raw[1:].lstrip()
-        # remove colchetes se existirem
         if raw.startswith("[") and raw.endswith("]"):
             raw = raw[1:-1]
-        # separa por vírgula ou espaço
         parts = []
         for chunk in raw.replace(",", " ").split():
             if chunk:
                 parts.append(chunk)
         return tuple(parts)
-    # Iterable normal
     return tuple(str(a) for a in args)
 
 
@@ -90,7 +85,6 @@ def run_python_script(
     
 
     if show_output:
-        # Repassa saída diretamente ao terminal
         try:
             completed = subprocess.run(
                 cmd,
@@ -115,7 +109,6 @@ def run_python_script(
             "cmd": cmd,
         }
 
-    # Captura stdout/stderr
     try:
         print('aassaas')
         completed = subprocess.run(

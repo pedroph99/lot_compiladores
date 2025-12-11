@@ -1,0 +1,9 @@
+object ServerApp {
+  type: server;
+  language: python;
+  framework: fastapi;
+  mainFile: app;
+  path: ./pastaFastapiServer;
+};
+
+test run ServerApp serverports:[8000] args:[/, /health];

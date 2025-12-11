@@ -2,7 +2,7 @@ from pastaFastapiServer.app import app
 
 if __name__ == "__main__":
     try:
-        import uvicorn  # type: ignore
+        import uvicorn 
     except Exception as exc:
         raise SystemExit(
             "Uvicorn não está instalado. Instale com: pip install uvicorn fastapi"
