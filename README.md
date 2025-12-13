@@ -1,5 +1,10 @@
 # LOT - Linguagem orientada a testes
 
+# Desenvolvedores do projeto:
+Jean Oliveira
+Marina Mendonça
+Pedro 
+Rodrigo Campos
 
 ## 1. Proposta da linguagem
 
