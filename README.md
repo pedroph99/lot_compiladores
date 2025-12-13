@@ -8,12 +8,12 @@ Professor: Luis Carlos
 
 ## 1. Proposta da linguagem
 
-A LOT é uma linguagem de programação feita para facilitar a execução de testes de software. Ela foi criada com o objetivo de tornar o processo de desenvolvimento de software mais rápido e eficiente, permitindo de maneira fácil a criação de alguns testes unitários para diversas linguagens de programação, seja um script avulso ou um servidor web. A linguagem é independente de sistemas operacionais, pois utiliza as bibliotecas nativas da linguagem python  para a chamada do sistema operacional.
+A LOT é uma linguagem de programação feita para facilitar a execução de testes de software. Ela foi criada com o objetivo de tornar o processo de desenvolvimento de software mais rápido e eficiente, permitindo de maneira fácil a criação de alguns testes unitários para diversas linguagens de programação, seja um script avulso ou um servidor web. A linguagem é independente de sistemas operacionais, pois utiliza as bibliotecas nativas da linguagem python para a chamada do sistema operacional.
 
 
 
 ## 2. Estrutura do processo de execução
-LOT é uma linguagem de programação interpretada, seguindo o fluxo Analisador Léxico-Sintático-Semântico. Após a validação do código fonte pelo front-end do LOT, a árvore gramatical gerada é interpretada pelo interpretador escrito em Python, que utiliza o sistema operacional através de bibliotecas nativas do python como sys, os, subprocess, etc. para executar os testes em diferentes linguagens de programação como Python e Node. 
+LOT é uma linguagem de programação interpretada, seguindo o fluxo Analisador Léxico-Sintático-Semântico. Após a validação do código fonte pelo front-end do LOT, a árvore gramatical gerada é interpretada pelo interpretador escrito em Python, que utiliza o sistema operacional através de bibliotecas nativas do python como sys, os, subprocess, etc. para executar os testes em diferentes linguagens de programação como python, node, etc... 
 
 ```mermaid
 flowchart LR
@@ -27,10 +27,10 @@ flowchart LR
     end
 ```
 ## 3. Estrutura da linguagem
-A LOT é uma linguagem que permite a criação de objetos, que carregam informações sobre o tipo daquele objeto, que pode ser um servidor ou um script. Dependendo do tipo, o objeto precisará carregar alguns parâmetros, principalmente para o servidor, que necessita carregar o framework (FASTAPI, EXPRESS, etc...) e o arquivo principal (app.py, index.js, etc... ) que será executado. Path é o caminho onde o arquivo principal será carregado.
+A LOT é uma linguagem que permite a criação de objetos, que carregam informações sobre o tipo daquele objeto, que pode ser um servidor ou um script. Dependendo do tipo, o objeto precisa carregar alguns parâmetros, principalmente para o servidor, que precisa carregar o framework (FASTAPI, EXPRESS, etc...) e o arquivo principal (app.py, index.js, etc... ) que será executado. Path é o caminho onde o arquivo principal será carregado.
 
 ```
-object App {
+object FastAPIServer {
   type: server;
   language: python;
   framework: fastapi;
@@ -39,9 +39,9 @@ object App {
 };
 
 ```
-Neste exemplo, o objeto App é do tipo server, que é um servidor web, e o arquivo principal é app.py, que é um arquivo python. O caminho é ./pastaFastapiServer, que é a pasta onde o arquivo app.py será carregado. Embora alguns campos sejam definidos como opcionais na gramática, o analisador semântico do LOT garante que todos os parâmetros obrigatórios para o tipo de objeto declarado sejam fornecidos na hora da execução do teste.
+Neste exemplo, o objeto FastAPIServer é do tipo server, que é um servidor web, e o arquivo principal é app.py, que é um arquivo python. O caminho é ./pastaFastapiServer, que é a pasta onde o arquivo app.py será carregado. Apesar de na estrutura definida da linguagem como opcionais, o analisador semântico do LOT checa se os campos necessários para aquele tipo são preenchidos. 
 
-Para scripts avulsos, o objeto é do tipo script, sendo necessário informar o arquivo principal, que será executado, além de seu caminho onde será carregado. Especificar a linguagem é fundamental para que o interpretador possa executar o script, pois executará um comando de acordo com cada liguagem, por exemplo, <code>python scriptTeste.py</code> para Python e <code>node scriptTeste.js</code> para Node.
+Para scripts avulsos, o objeto é do tipo script, sendo necessário informar o arquivo principal, que será executado, além de seu caminho onde será carregado. Especificar a linguagem é fundamental para que o interpretador possa executar o script, pois executará um comando de acordo com cada liguagem, por exemplo, <code>python scriptTeste.py</code> para python e <code>node scriptTeste.js</code> para node.
 
 ```
 object ScriptTest {
@@ -90,24 +90,20 @@ Após o tipo do teste, definimos o(s) nome(s) do(s) objeto(s) que será(ão) exe
 objectName+=ID (((',' objectName+=ID) | (objectName+=ID))*)
 ```
 
-Por último, definimos os parâmetros do teste unitário, que podem ser:
-
-- serveports: é um array de números inteiros, que são os ports dos servidores que serão executados. 
-- serverApps: é um array de strings, que são os nomes dos objetos que serão executados. 
-- args: é um array de arrays de strings, que são os argumentos que serão passados para o objeto.
-
-```
-testargs+=testArguments
-```
-
+Por último, os parâmetros dos testes unitários são passados como listas dentro de colchetes após o nome dos objetos:
 ```
 testArguments:
-    'serveports' ':' '[' serverports+=INT ']' #serverPorts |
+    'serverports' ':' '[' serverports+=INT ']' #serverPorts |
     'serverApps' ':' '[' serverapps+=ID ']' #serverApps |
     argsValues = argsSpec #args |
     argsValues = argsBulkSpec #argsBulk;
 
 ```
+
+- <code>serverports</code>: é um array de números inteiros, que são os ports dos servidores que serão executados. Ex.: 3000, 8000. 
+- <code>serverApps</code>: é um array de strings, que definem o nome da instância da aplicação (variável <code>app</code>) dentro do arquivo Python. É obrigatório para testes nos servidores FastAPI, mas dispensáveis para Express ou scripts. 
+- <code>args</code>: é um array de arrays de strings, que são os argumentos que serão passados para o objeto. Definirá os inputs do teste, e o formato exato depende do modo do teste que está sendo executado.
+
 
 ## 3.2 O arquivo main.py
 Ao executar o main.py, ativará o dunder-main do arquivo, contendo sempre a esturura 
@@ -127,9 +123,6 @@ A classe ExprSemanticAnalyser é responsável por realizar a análise semântica
 
 O interpretador é executado pela classe ExprInterpreter, que recebe como parâmetro a árvore gerada pelo parser. Vale lembrar que como a árvore gerada pelo parser é gerada por uma classe, as informações dos objetos e suas variáveis persistem e servem de base para a execução do interpretador, que é responsável por realizar a execução dos testes unitários.
 
-
-
-
 ## 4. Executando testes com LOT
 
 Após a criação dos objetos, é possível realizar a execução daquele objeto com o comando <code>test run</code> para executar apenas um teste unitário ou <code>test runBulk</code> para executar vários testes unitários.
@@ -141,29 +134,20 @@ O comando se divide em três partes principais: o modo de execução do teste, a
 test (run|runBulk) NomeDosObjetos [NomeDosObjetos]* (serverports:[...])? (serverApps:[...])? (args:[...])?;
 ```
 
-#### 4.2 Parâmetros dos testes unitários
 
-Os parâmetros dos testes unitários são passados como listas dentro de colchetes após o nome dos objetos:
-
-- <code>serverports</code>: é um array de números inteiros, que são os ports dos servidores que serão executados. Ex.: 3000, 8000. 
-- <code>serverApps</code>: é um array de strings, que definem o nome da instância da aplicação (variável <code>app</code>) dentro do arquivo Python. É obrigatório para testes nos servidores FastAPI, mas dispensáveis para Express ou scripts. 
-- <code>args</code>: é um array de arrays de strings, que são os argumentos que serão passados para o objeto. Definirá os inputs do teste, e o formato exato depende do modo do teste que está sendo executado.
-
-> Nota sobre o <code>args</code>:
-> - Para Scripts (type: script): os valores são passados como argumentos de linha de comando. Ex.: <code>python script.py arg1 arg2</code>.
-> - Para Servidores (type: server): os valores são interpretados como rotas/endpoints, que serão testadas via requisição HTTP GET. Ex.: /health.
-
-#### 4.3 Exemplos de uso
+#### 4.2 Exemplos de uso
 
 #### A) Testando um script simples (Python ou Node):
-- Executa um script passando os valores <code>"input.txt"</code> e <code>10</code> como argumentados de entrada:
+- O objetivo é verificar se o script é executado corretamente e se ele recebe os argumentos de linha de comando esperados.
 ```
-// O objeto CalculadoraScript deve ter type: script na sua definição
-test run CalculadoraScript args:["input.txt", 10];
+// O objeto ScriptTest deve ter type: script na sua definição
+test run ScriptTest args:[MundoLOT];
 ```
+Executa o script ScriptTest passando a string <code>MundoLOT</code> como argumento de entrada. O script captura este valor (via sys.argv[1] se for Python, ou process.argv[2] se for Node) e o utiliza para personalizar a mensagem de saída.
 
 #### B) Testando um servidor Express (Node.js):
 - Inicia o servidor na porta <code>3000</code> e verifica se as rotas <code>/health</code> e <code>/users</code> respondem com sucesso (HTTP 200):
+- É necessário instalar o Express para poder rodar esse teste: <code>npm install express</code>
 ```
 // O servidor Express não precisa do parâmetro 'serverApps'.
 test run ExpressServer 
@@ -174,14 +158,14 @@ test run ExpressServer
 #### C) Execução em Lote (runBulk):
 - Executa múltiplos objetos em sequência. A ordem dos argumentos nos arrays deve corresponder exatamente à ordem dos objetos:
  ```
-test runBulk AppFastAPI ScriptPython ServerExpress
-    serverports: [8000, 3030]          // Porta 8000 (FastAPI) e 3030 (Express).
-    serverApps:  [app]                 // 'app' para o FastAPI. (para outros podem ser omitidos).
-    args: [ 
-        [/health],      // Argumentos/Rotas para AppFastAPI
-        [--verbose],    // Argumentos de linha (CLI) para ScriptPython
-        [/api]          // Argumentos/Rotas para ServerExpress
-    ];
+test runBulk FastAPIServer ScriptTest ScriptTesttwo 
+    serverports: [8000] 
+    args: [ [/abc, /]];
+    // Argumentos alinhados: 
+    // 1. FastAPIServer -> Recebe [/abc, /] como rotas
+    // 2. ScriptTest -> Sem argumentos (retorna erro por não identificar sys.argv[1])
+    // 3. ScriptTesttwo -> Sem argumentos
+    serverApps: [app]
 ```
 ## 5. Detalhando a Funcionalidade de Teste de Rotas
 - Quando o objeto testado é um servidor <code>(type: server)</code>, o parâmetro <code>args</code> é utilizado para fornecer uma lista de endpoints que o LOT deve acessar via requisição HTTP GET para verificar se a infraestrutura está funcional.
@@ -228,14 +212,10 @@ test run FastApiObject
     args: [/, /health]; // Rotas que serão acessadas
 ```
 
-  
-  
-
-
-  
-
-
-
+### 6. Rodando o código fonte
+- Utilize o comando <code>pythom main.py teste.txt</code> para rodar o projeto.
+- Todo o código da linguagem é escrito em um arquivo de texto <code>teste.txt</code>, onde se definem os objetos e os comandos de testes a serem executados.
+-  Os arquivos Lexer e Parser do ANTLR4 já estão compilados no diretório, então não precisamos instalar os pacotes do ANTLR4.
 
 
 
