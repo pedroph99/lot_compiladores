@@ -3,7 +3,6 @@ grammar Expr;
 document:
     (decs+=declaration+) EOF;
 
-
 declaration:
         'object' objectName=ID '{'
             'type' ':' type=TYPES ';'
@@ -22,7 +21,6 @@ testArguments:
     argsValues = argsSpec #args |
     argsValues = argsBulkSpec #argsBulk;
 
-// Parser rule para argumentos do teste (IDs ou INTs, separados por espaço ou vírgula)
 argsSpec:
     'args' ':' '[' args+=(ID|INT|PATH) ( (',' args+=(ID|INT|PATH)) | (args+=(ID|INT|PATH)) )* ']'
     ;
@@ -31,10 +29,8 @@ argsBulkSpec:
     'args' ':' '[' args+=argsBulkBody ((',' args+=argsBulkBody) | (args+=argsBulkBody))* ']';
 
 argsBulkBody:
-    '[' args+=(ID|INT) ( (',' args+=(ID|INT)) | (args+=(ID|INT)) )* ']'
+    '[' args+=(ID|INT|PATH) ( (',' args+=(ID|INT|PATH)) | (args+=(ID|INT|PATH)) )* ']'
     ;
-
-
 
 TYPETEST: 'run' | 'runBulk';
 FRAMEWORKSERVER: 'fastapi' | 'express' | 'rails' ;
@@ -45,5 +41,4 @@ ID:   [a-zA-Z]+ ;
 INT:  [0-9]+ ;
 PATH: [a-zA-Z0-9/\-_.]+ ;
 WS : (' ' | '\t' | '\r' | '\n')+ -> skip ;
-
 

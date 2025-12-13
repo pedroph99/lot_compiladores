@@ -1,4 +1,4 @@
-object App {
+object FastAPIServer {
   type: server;
   language: python;
   framework: fastapi;
@@ -11,8 +11,6 @@ object ScriptTest {
   language: python;
   mainFile: scriptTeste;
   path: ./pastaScript;
-
-  
 };
 
 object ScriptTesttwo {
@@ -20,8 +18,6 @@ object ScriptTesttwo {
   language: node;
   mainFile: scriptTeste;
   path: ./pastaScript;
-
-  
 };
 
 object ExpressServer {
@@ -32,6 +28,9 @@ object ExpressServer {
   path: ./pastaExpressServer;
 };
 
-test runBulk App  ScriptTest  ScriptTesttwo serverports: [8000] args: [ [1,2] ]  serverApps : [ app ] ;
+test run ScriptTest args:[MundoLOT];
+
+test runBulk FastAPIServer  ScriptTest  ScriptTesttwo serverports: [8000] args: [ [/abc, /] ] serverApps : [ app ];
 
 test run ExpressServer serverports:[3000] args:[/health, /users, /api/status];
+test run FastAPIServer serverports:[8000] args:[/, /health] serverApps:[app];

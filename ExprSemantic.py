@@ -20,10 +20,8 @@ class ExprSemanticAnalyser:
                 for child in tree.decs:
                     self.analyse(child)
             case ExprParser.ObjectDeclarationContext():
-                # Adiciona o nome da variável ao dicionário
                 self.object_variables.append(tree.objectName.text)
 
-                # Verifica a compatibilidade do framework e linguagem
                 type_obj = tree.type_
                 framework = tree.server
                 language = tree.language
@@ -39,7 +37,6 @@ class ExprSemanticAnalyser:
                     raise InvalidObjectException(f"Object {tree.objectName.text} must have a framework because it is a server")
 
                 
-                # Adiciona informações da variável
 
                 self.objects_infos[tree.objectName.text] = {
                     "type": type_obj.text,
