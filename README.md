@@ -1,8 +1,8 @@
 # LOT - Linguagem orientada a testes
 
 ## Desenvolvedores do projeto:
-Estudantes: Jean Oliveira, Marina Mendonça, Pedro Henrique Bezerra de Mello e Rodrigo Campos de Oliveira Cabral
-Disciplina: Compiladores
+Estudantes: Jean Oliveira, Marina Mendonça, Pedro Henrique Bezerra de Mello e Rodrigo Campos de Oliveira Cabral /n
+Disciplina: Compiladores /n
 Professor: Luis Carlos
 
 ## 1. Proposta da linguagem
