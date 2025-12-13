@@ -52,6 +52,83 @@ object ScriptTest {
 };
 ```
 
+## 3.1 Gramática ANTLR da linguagem LOT
+
+A gramática ANTLR 4 da linguagem LOT pode ser encontrada no arquivo Expr.g4.
+
+Basicamente, a linguagem começa com uma estrutura chamada document, que é composta por uma ou mais  declarações, que podem ser objetos ou testes. 
+```
+document:
+    (decs+=declaration+) EOF;
+  ```
+
+Sintáticamente falando, uma declaração (declaration) pode ser um ObjectDeclaration ou um TestDeclaration, sendo o ObjectDeclaration o definidor de um objeto e o TestDeclaration o definidor de um teste unitário.
+
+```
+declaration:
+        'object' objectName=ID '{'
+            'type' ':' type=TYPES ';'
+            ('language' ':' language=LANGUAGES ';' )?
+            ('framework'  ':' server=FRAMEWORKSERVER ';')?
+            ('mainFile' ':' mainFile=ID ';')?
+            ('path' ':' path=PATH ';')?
+        '}' ';' #objectDeclaration
+    |
+        'test' TYPETEST objectName+=ID (((',' objectName+=ID) | (objectName+=ID))*) (testargs+=testArguments)* ';' #testDeclaration
+    ;
+```
+
+Nos testDeclarations preciamos definir primeiramente o tipo do teste, que pode ser run ou runBulk; Run seria para executar apenas UM teste unitário, enquanto runBulk seria para executar vários testes unitários.
+
+```
+TYPETEST: 'run' | 'runBulk';
+```
+
+Após o tipo do teste, definimos o(s) nome(s) do(s) objeto(s) que será(ão) executado(s), que pode ser um objeto do tipo server ou script. 
+
+```
+objectName+=ID (((',' objectName+=ID) | (objectName+=ID))*)
+```
+
+Por último, definimos os parâmetros do teste unitário, que podem ser:
+
+- serveports: é um array de números inteiros, que são os ports dos servidores que serão executados. 
+- serverApps: é um array de strings, que são os nomes dos objetos que serão executados. 
+- args: é um array de arrays de strings, que são os argumentos que serão passados para o objeto.
+
+```
+testargs+=testArguments
+```
+
+```
+testArguments:
+    'serveports' ':' '[' serverports+=INT ']' #serverPorts |
+    'serverApps' ':' '[' serverapps+=ID ']' #serverApps |
+    argsValues = argsSpec #args |
+    argsValues = argsBulkSpec #argsBulk;
+
+```
+
+## 3.2 O arquivo main.py
+Ao executar o main.py, ativará o dunder-main do arquivo, contendo sempre a esturura 
+``` 
+python main.py ./<NOME_DO_ARQUIVO_DE_ENTRADA>
+```
+Caso não haja nenhum arquivo de entrada, será exibido o seguinte erro:
+```
+Uso: python main.py <arquivo_de_entrada>
+```
+
+O fluxo de análise léxico-sintático é realizado pela função parse_file, que recebe como parâmetro o arquivo de entrada na forma de FileStream, gerando primeiramente os tokens (token_stream) e caso haja erros, a classeCollectingErrorListener é utilizada para capturar os erros do programa. 
+
+O mesmo processo se repete para o parser, que recebe o stream de tokens e gera a árvore de parse (tree). Caso haja erros, a classe CollectingErrorListener é utilizada para capturar os erros do programa.
+
+A classe ExprSemanticAnalyser é responsável por realizar a análise semântica do código fonte, que é feita através da função analise, que recebe como parâmetro a árvore gerada pelo parser.
+
+O interpretador é executado pela classe ExprInterpreter, que recebe como parâmetro a árvore gerada pelo parser. Vale lembrar que como a árvore gerada pelo parser é gerada por uma classe, as informações dos objetos e suas variáveis persistem e servem de base para a execução do interpretador, que é responsável por realizar a execução dos testes unitários.
+
+
+
 
 ## 4. Executando testes com LOT
 
