@@ -213,6 +213,7 @@ test run FastApiObject
 ```
 
 ### 6. Rodando o código fonte
+- Instale o Express via <code>npm install express</code> para conseguir rodar os teste dele.
 - Utilize o comando <code>pythom main.py teste.txt</code> para rodar o projeto.
 - Todo o código da linguagem é escrito em um arquivo de texto <code>teste.txt</code>, onde se definem os objetos e os comandos de testes a serem executados.
 -  Os arquivos Lexer e Parser do ANTLR4 já estão compilados no diretório, então não precisamos instalar os pacotes do ANTLR4.
