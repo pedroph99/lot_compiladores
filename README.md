@@ -2,7 +2,7 @@
 
 ## Desenvolvedores do projeto:
 Escola Politécnica de Pernambuco (POLI/UPE)  
-Estudantes: Jean Felipe Morais de Oliveira, Pedro Henrique Bezerra de Mello e Rodrigo Campos de Oliveira Cabral  
+Estudantes: Jean Felipe Morais de Oliveira, Marina Mendonça Jatobá, Pedro Henrique Bezerra de Mello e Rodrigo Campos de Oliveira Cabral  
 Disciplina: Compiladores  
 Professor: Luis Carlos  
 
