@@ -1,8 +1,6 @@
 import sys
 from antlr4 import FileStream, CommonTokenStream
 from antlr4.error.ErrorListener import ErrorListener
-
-# Imports gerados pelo ANTLR ap��s a compila��ǜo de Expr.g4
 from ExprLexer import ExprLexer
 from ExprParser import ExprParser
 from ExprSemantic import ExprSemanticAnalyser
@@ -20,7 +18,6 @@ class CollectingErrorListener(ErrorListener):
 
 
 def parse_file(path: str):
-    # LǦ o arquivo e prepara lexer/parser
     input_stream = FileStream(path, encoding="utf-8")
     
     lexer = ExprLexer(input_stream)
@@ -35,9 +32,7 @@ def parse_file(path: str):
     parse_listener = CollectingErrorListener()
     parser.addErrorListener(parse_listener)
 
-    # Parse a partir da regra inicial 'document'
     tree = parser.document()
-    # Junta erros lǸxicos e sintǭticos
     all_errors = lex_listener.errors + parse_listener.errors
     if all_errors:
         print("Erros encontrados:")
@@ -60,12 +55,9 @@ if __name__ == "__main__":
         sys.exit(2)
     
     
-    # Analisa semanticamente o texto
     analisador_semantico  = ExprSemanticAnalyser()
-    # Passa a ǭrvore jǭ constru��da (DocumentContext)
     analisador_semantico.analyse(tree)
 
-    # Executa testes com o interpretador
 
     interpreter = ExprInterpreter(analisador_semantico.objects_infos)
     interpreter.run(tree)

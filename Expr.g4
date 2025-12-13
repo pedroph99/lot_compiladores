@@ -3,7 +3,6 @@ grammar Expr;
 document:
     (decs+=declaration+) EOF;
 
-
 declaration:
         'object' objectName=ID '{'
             'type' ':' type=TYPES ';'
@@ -17,24 +16,21 @@ declaration:
     ;
 
 testArguments:
-    'serveports' ':' '[' serverports+=INT ']' #serverPorts |
+    'serverports' ':' '[' serverports+=INT ']' #serverPorts |
     'serverApps' ':' '[' serverapps+=ID ']' #serverApps |
     argsValues = argsSpec #args |
     argsValues = argsBulkSpec #argsBulk;
 
-// Parser rule para argumentos do teste (IDs ou INTs, separados por espaco ou vedrgula)
 argsSpec:
-    'args' ':' '[' args+=(ID|INT) ( (',' args+=(ID|INT)) | (args+=(ID|INT)) )* ']'
+    'args' ':' '[' args+=(ID|INT|PATH) ( (',' args+=(ID|INT|PATH)) | (args+=(ID|INT|PATH)) )* ']'
     ;
 
 argsBulkSpec:
     'args' ':' '[' args+=argsBulkBody ((',' args+=argsBulkBody) | (args+=argsBulkBody))* ']';
 
 argsBulkBody:
-    '[' args+=(ID|INT) ( (',' args+=(ID|INT)) | (args+=(ID|INT)) )* ']'
+    '[' args+=(ID|INT|PATH) ( (',' args+=(ID|INT|PATH)) | (args+=(ID|INT|PATH)) )* ']'
     ;
-
-
 
 TYPETEST: 'run' | 'runBulk';
 FRAMEWORKSERVER: 'fastapi' | 'express' | 'rails' ;
@@ -44,5 +40,5 @@ TYPES: 'script' | 'server' ;
 ID:   [a-zA-Z]+ ;
 INT:  [0-9]+ ;
 PATH: [a-zA-Z0-9/\-_.]+ ;
-WS: [ \t\r\n]+ -> skip;
+WS : (' ' | '\t' | '\r' | '\n')+ -> skip ;
 
