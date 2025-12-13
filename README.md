@@ -1,7 +1,8 @@
 # LOT - Linguagem orientada a testes
 
 ## Desenvolvedores do projeto:
-Estudantes: Jean Oliveira, Marina Mendonça, Pedro Henrique Bezerra de Mello e Rodrigo Campos de Oliveira Cabral  
+Escola Politécnica de Pernambuco (POLI/UPE)  
+Estudantes: Jean Felipe Morais de Oliveira, Marina Mendonça, Pedro Henrique Bezerra de Mello e Rodrigo Campos de Oliveira Cabral  
 Disciplina: Compiladores  
 Professor: Luis Carlos  
 
