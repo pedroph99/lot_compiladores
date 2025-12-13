@@ -2,6 +2,8 @@
 
 ## Desenvolvedores do projeto:
 Estudantes: Jean Oliveira, Marina Mendonça, Pedro Henrique Bezerra de Mello e Rodrigo Campos de Oliveira Cabral
+Disciplina: Compiladores
+Professor: Luis Carlos
 
 ## 1. Proposta da linguagem
 
